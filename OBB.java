@@ -1,16 +1,19 @@
+package mchhui.he.util;
 
-
-import net.minecraft.util.math.Vec3d;
-
+import javax.vecmath.Vector3d;
+/**
+ * MIT Licence
+ * @author Hueihuea
+ * */
 public class OBB {
     /*pos(x,y,z)*/
-    public Vec3d pos;
+    public Vector3d pos;
     /*euler(yaw,pitch,roll)*/
-    public Vec3d rotation;
+    public Vector3d rotation;
     /*size(x,y,z)*/
-    public Vec3d size;
+    public Vector3d size;
     
-    public OBB(Vec3d pos,Vec3d rotation,Vec3d size) {
+    public OBB(Vector3d pos,Vector3d rotation,Vector3d size) {
         this.pos=pos;
         this.rotation=rotation;
         this.size=size;
