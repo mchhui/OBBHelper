@@ -4,17 +4,14 @@ import javax.vecmath.Vector3d;
 
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-/**
- * MIT Licence
- * @author Hueihuea
- * */
+
 public class OBBHelper {
     public static boolean testCollision(OBB obb1, OBB obb2) {
         OBB[] obbs = new OBB[] { obb1, obb2 };
         Vec3d[] axis = new Vec3d[3];
-        axis[0] = new Vec3d(1, 0, 0);
-        axis[1] = new Vec3d(0, 1, 0);
-        axis[2] = new Vec3d(0, 0, 1);
+        axis[0] = new Vec3d(0.5, 0, 0);
+        axis[1] = new Vec3d(0, 0.5, 0);
+        axis[2] = new Vec3d(0, 0, 0.5);
         Vector3d obb1VecX = rotate(axis[0].scale(obb1.size.x), obb1.rotation.x, obb1.rotation.y, obb1.rotation.z);
         Vector3d obb1VecY = rotate(axis[1].scale(obb1.size.y), obb1.rotation.x, obb1.rotation.y, obb1.rotation.z);
         Vector3d obb1VecZ = rotate(axis[2].scale(obb1.size.z), obb1.rotation.x, obb1.rotation.y, obb1.rotation.z);
@@ -32,8 +29,7 @@ public class OBBHelper {
                         + projectionFast(obb1VecZ, axiVec);
                 proj2= projectionFast(obb2VecX, axiVec) + projectionFast(obb2VecY, axiVec)
                         + projectionFast(obb2VecZ, axiVec);
-                obb2.pos.sub(obb1.pos);
-                projAB= projectionFast(obb2.pos, axiVec);
+                projAB= projectionFast(new Vector3d(obb2.pos.x-obb1.pos.x,obb2.pos.y-obb1.pos.y,obb2.pos.z-obb1.pos.z), axiVec);
                 if (projAB > proj1 + proj2) {
                     return false;
                 }
@@ -50,14 +46,15 @@ public class OBBHelper {
         pitch=Math.toRadians(pitch);
         roll=Math.toRadians(roll);
 
-        float cos = MathHelper.cos((float) (yaw));
-        float sin = MathHelper.sin((float) (yaw));
-        float px = z;
-        float py = x;
+        float cos = MathHelper.cos((float) (roll));
+        float sin = MathHelper.sin((float) (roll));
+        float px = x;
+        float py = y;
         float x0 = px * cos - py * sin;
         float y0 = px * sin + py * cos;
-        z = x0;
-        x = y0;
+        x = x0;
+        y = y0;
+        
 
         cos = MathHelper.cos((float) (pitch));
         sin = MathHelper.sin((float) (pitch));
@@ -67,15 +64,15 @@ public class OBBHelper {
         y0 = px * sin + py * cos;
         z = x0;
         y = y0;
-
-        cos = MathHelper.cos((float) (roll));
-        sin = MathHelper.sin((float) (roll));
-        px = x;
-        py = y;
+        
+        cos = MathHelper.cos((float) (yaw));
+        sin = MathHelper.sin((float) (yaw));
+        px = z;
+        py = x;
         x0 = px * cos - py * sin;
         y0 = px * sin + py * cos;
-        x = x0;
-        y = y0;
+        z = x0;
+        x = y0;
 
         return new Vector3d(x,y,z);
     }
